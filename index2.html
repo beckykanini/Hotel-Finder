@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Input Form</title>
+</head>
+<body>
+  <form id="nameForm">
+    <label for="name">I love this hotel:</label><br />
+    <input type="text" id="name" name="name" /><br />
+    <label for="name">Find me something similar in:</label>
+    <input type="text" id="name" name="name" /><br />
+    <input type="submit" value="Submit" />
+  </form>
+
+  <div id="responseContainer1"></div>
+  <div id="responseContainer2"></div>
+
+  <script>
+    document.getElementById("nameForm").addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+
+      // Get the value of the name input field
+      var name = document.getElementById("name").value;
+
+      // Send a POST request to CORS Anywhere proxy with the name
+      fetch("http://localhost:8000", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userInput: name }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Response received:", data);
+          // Display response in the HTML
+        var responseContainer = document.getElementById("responseContainer1");
+        responseContainer.innerHTML = ""; // Clear previous content
+        data.forEach(function(obj) {
+            var paragraph = document.createElement("p");
+            paragraph.textContent = `Rank: ${obj.rank}, Hotel Name: ${obj.hotel_name}, Rating: ${obj.rating}, Distance: ${obj.distance}`;
+            responseContainer.appendChild(paragraph);
+        });
+          
+        })
+        .catch((error) => {
+          console.error(
+            "There was a problem with the fetch operation:",
+            error
+          );
+          alert("Failed to submit name. Please try again later.");
+        });
+    });
+  </script>
+</body>
+</html>

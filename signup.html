@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up Form</title>
+  <link rel="stylesheet" href="styles.css">
+  <link
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+<body>
+
+<div class="container1">
+  <h2>Sign Up</h2>
+  <form action="signup.php" method="POST" onsubmit="return validateForm()">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" ><br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Email" ><br>
+    <label for="phone_num">Phone Number:</label>
+    <input type="tel" name="phone_no" id="phone_no" required >
+    <label for="password">Password:</label>
+    <input type="password" id="passwd" name="passwd" placeholder="Password"><br>
+    <label for="confirm_password">Confirm Password:</label>
+    <input type="password" id="conf_passwd" name="conf_passwd" ><br>
+    <button type="submit" name="submit">Sign Up</button> 
+  </form>
+  <p id="message"></p>
+</div>
+<style>
+  
+</style>
+<script>
+  function validateEmail(){
+
+    email=document.getElementById("email").value;
+    if(email.length==0 || email.indexOf("@")==-1|| email.indexOf(".")==-1){
+      alert("You must enter a valid email");
+      document.getElementById("email").focus();
+      return false;
+    }else
+      return true;
+  }
+  function validateUsername(){
+    username=document.getElementById("username").value;
+    if(username==""){
+      alert("Please enter your username");
+      document.getElementById("username").focus();
+      return false;
+      }
+  }
+  function validatePassword() {
+    var password = document.getElementById("passwd").value;
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long");
+      document.getElementById("passwd").focus();
+      return false;
+    }
+
+    var hasUpperCase = false;
+    var hasLowerCase = false;
+    var hasDigit = false;
+    
+    for (var i = 0; i < password.length; i++) {
+      var char = password[i];
+      if (char >= 'A' && char <= 'Z') {
+        hasUpperCase = true;
+      }
+      if (char >= 'a' && char <= 'z') {
+        hasLowerCase = true;
+      }
+      if (char >= '0' && char <= '9') {
+        hasDigit = true;
+      }
+    }
+
+    if (hasUpperCase && hasLowerCase && hasDigit) {
+      return true;
+    } else {
+      alert("Password must contain at least one uppercase letter, one lowercase letter, and one digit.");
+      return false;
+    }
+  }
+  function validateConfirmPassword() {
+    var password = document.getElementById("passwd").value;
+    var confirmPassword = document.getElementById("conf_passwd").value;
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      document.getElementById("conf_passwd").focus();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function validateForm() {
+    //First we check other input filed for empty
+    var username = document.getElementById("username").value;
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("passwd").value;
+    var confirmPassword = document.getElementById("conf_passwd").value;
+    
+    if(username==""){
+      alert("Please enter your username");
+      document.getElementById("username").focus();
+      return false;
+    }
+    if(email==""){
+      alert("Please enter email address");
+      document.getElementById("email").focus();
+      return false;
+    }
+    if(passwd==""){
+      alert("Please enter password");
+      document.getElementById("passwd").focus();
+      return false;
+    }
+    if(conf_passwd==""){
+      alert("Please enter password you entered above");
+      document.getElementById("conf_passwd").focus();
+      return false;
+    }
+      var val=true;
+
+      val=validateUsername();
+      if(val == true);
+      val=validateEmail();
+      if(val == true);
+      val=validatePassword();
+      if(val == true);
+      val=validateConfirmPassword();
+      if(val == true);
+      return val;
+  }
+  
+
+</script>
+</body>
+</html>

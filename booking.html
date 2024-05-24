@@ -1,0 +1,182 @@
+:<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Recommendations</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Styles for the input section */
+        .input-container {
+            margin-bottom: 20px;
+        }
+        .input-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-container input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .input-container button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px; /* Added margin for spacing */
+        }
+
+        /* Styles for the map container */
+        #map {
+            height: 600px; /* Adjust height as needed */
+            margin-bottom: 20px;
+        }
+
+        /* Styles for hotel info container */
+        .hotel-info {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Styles for Google search link button */
+        .google-search-button {
+            background-color: #4285F4; /* Google blue */
+        }
+    </style>
+</head>
+<body>
+    <div class="input-container">
+        <label for="hotel-features">Hotel Features:</label>
+        <input type="text" id="hotel-features" placeholder="Enter hotel features...">
+        <label for="hotel-name">Hotel Name:</label>
+        <input type="text" id="hotel-name" placeholder="Enter hotel name...">
+        <label for="location">Location:</label>
+        <input type="text" id="location" placeholder="Enter location...">
+        <button onclick="fetchHotelRecommendations()">Submit</button>
+    </div>
+
+    <!-- Hotel info container -->
+    <div id="hotel-info-container"></div>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Leaflet.js library -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <script>
+        // Function to fetch hotel recommendations
+        function fetchHotelRecommendations() {
+            var hotelFeatures = document.getElementById("hotel-features").value;
+            var hotelName = document.getElementById("hotel-name").value;
+            var location = document.getElementById("location").value;
+
+            var requestData = {
+                "hotel_features": hotelFeatures,
+                "hotel_input": hotelName,
+                "location_input": location
+            };
+
+            // Make a POST request to the server
+            fetch("http://localhost:8000", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Initialize map
+                var map = L.map('map').setView([0, 0], 2); // Centered at (0, 0) with zoom level 2
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                // Add markers for recommended hotels
+                var hotelInfoContainer = document.getElementById("hotel-info-container");
+                hotelInfoContainer.innerHTML = ""; // Clear previous content
+
+                data.recommended_hotels.forEach(hotel => {
+                    var lat = hotel.location.latitude;
+                    var lon = hotel.location.longitude;
+                    var hotelName = hotel.name;
+                    var rating = hotel.rating;
+                    var googleSearchLink = hotel.google_search_link;
+
+                   // Add markers for recommended hotels
+var hotelInfoContainer = document.getElementById("hotel-info-container");
+hotelInfoContainer.innerHTML = "";
+
+data.recommended_hotels.forEach(hotel => {
+    var lat = hotel.location.latitude;
+    var lon = hotel.location.longitude;
+    var hotelName = hotel.name;
+    var rating = hotel.rating;
+    var reviews = hotel.reviews || "No reviews available";
+    var weather = hotel.weather || {}; // Ensure weather data is available
+
+    // Add marker to the map
+    var marker = L.marker([lat, lon]).addTo(map)
+        .bindPopup(`<b>${hotelName}</b><br>Rating: ${rating}`)
+        .openPopup();
+
+    // Create hotel info container
+    var hotelInfo = document.createElement("div");
+    hotelInfo.classList.add("hotel-info");
+
+    hotelInfo.innerHTML = `<b>${hotelName}</b><br>Rating: ${rating}<br><br><b>Reviews:</b><br>${reviews}`;
+
+    // Weather information
+    var weatherInfo = document.createElement("div");
+    weatherInfo.classList.add("weather-info");
+    var weatherIcon = document.createElement("img");
+    weatherIcon.src = `http://openweathermap.org/img/wn/${weather.icon}.png`;
+    weatherIcon.alt = weather.description;
+    weatherInfo.appendChild(weatherIcon);
+    weatherInfo.innerHTML += `<span>${weather.temperature}°C, ${weather.description}</span>`;
+    hotelInfo.appendChild(weatherInfo);
+
+    // Button for viewing location on the map
+    var viewLocationButton = document.createElement("button");
+    viewLocationButton.innerHTML = "View Location on Map";
+    viewLocationButton.onclick = function() {
+        var url = `http://maps.google.com/maps?q=${lat},${lon}&name=${encodeURIComponent(hotelName)}`;
+        window.open(url, '_blank');
+    };
+    hotelInfo.appendChild(viewLocationButton);
+
+    // Button for Google search link
+    var googleSearchButton = document.createElement("button");
+    googleSearchButton.innerHTML = "Google Search";
+    googleSearchButton.classList.add("google-search-button");
+    googleSearchButton.onclick = function() {
+        var searchUrl = `https://www.google.com/search?q=${encodeURIComponent(hotelName)}+${encodeURIComponent(hotel.country)}`;
+        window.open(searchUrl, '_blank');
+    };
+    hotelInfo.appendChild(googleSearchButton);
+
+    hotelInfoContainer.appendChild(hotelInfo);
+});
+
+                });
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>

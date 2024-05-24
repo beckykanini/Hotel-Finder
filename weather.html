@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Recommendations</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="hotel.js"></script>
+    <a href="https://www.flaticon.com/free-icons/room" title="room icons"></a>
+    <style>
+        body {
+            font-family: cursive;
+            color: white;
+            padding: 20px;
+            background-image: url('img/image1.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="date"] {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        input[type="date"]:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        form input[type="text"],
+        form button,
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+        
+        }
+
+
+        form input[type="submit"] {
+            background-color: peru;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #d2691e;
+        }
+
+        #map {
+            height: 600px;
+            margin-bottom: 20px;
+        }
+        .hotel-info {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .google-search-button {
+            background-color: #4285F4;
+        }
+        .weather-info {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .weather-info img {
+            margin-right: 10px;
+        }
+        .flight-info {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            color: white;
+            z-index: 999;
+          }
+          
+          .sidebar .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 36px;
+            color: white;
+            cursor: pointer;
+          }
+          
+          .sidebar a, .sidebar button {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+          }
+          
+          .sidebar a:hover, .sidebar button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+          }
+          .menu-btn {
+            font-size: 30px;
+            cursor: pointer;
+            color: peru;
+            padding: 15px;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+          }
+    </style>
+</head>
+<body>
+    <!-- <div class="menu-btn" onclick="toggleSidebar()">&#9776;</div>
+        <div class="sidebar" id="sidebar">
+            <div class="close-btn" onclick="closeSidebar()">&times;</div>
+            <a href="#">Home</a>
+            <a href="login.html">Get started</a>
+            <a href="tophotels.html">Top Rated Hotels</a>
+            <a href="weather.html">Find Hotel</a>
+            <a href="guest_profile.html">Guest Profile</a>
+            <button onclick="logout()">Logout</button>
+            <div class="dropdown">Settings
+                <div class="dropdown-content">
+                    <a href="#" onclick="toggleTheme()">Themes</a>
+                    <a href="#">Users</a>
+                    <a href="#" onclick="changePassword()">Change Password</a>
+                </div>
+            </div>
+        </div> -->
+    <form id="inputForm" action="" method="POST">
+        <div class="input-container">
+        <label for="hotel-features">These are the features I want in a hotel:</label>
+        <input type="text" id="hotel-features" placeholder="Enter hotel features...">
+        <label for="hotel-name">I love this hotel</label>
+        <input type="text" id="hotel-name" placeholder="Enter hotel name...">
+        <label for="location">Find me something similar in this country</label>
+        <select id="location" name="location">
+            <option value="Albania">Albania</option>
+            <option value="Australia">Australia</option>
+            <option value="Austria">Austria</option>
+            <option value="Belgium">Belgium</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Canada">Canada</option>
+            <option value="Caribbean">Caribbean</option>
+            <option value="China">China</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Costa Rica">Costa Rica</option>
+            <option value="Denmark">Denmark</option>
+            <option value="Ecaduor">Ecaduor</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Finland">Finland</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Greece">Greece</option>
+            <option value="Honduras">Honduras</option>
+            <option value="Hungary">Hungary</option>
+            <option value="India">India</option>
+            <option value="Ireland">Ireland</option>
+            <option value="Italy">Italy</option>
+            <option value="Japan">Japan</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Luxembourg">Luxembourg</option>
+            <option value="Lebanon">Lebanon</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Malaysia">Malaysia</option>
+            <option value="New Zealand">New Zealand</option>
+            <option value="The Netherlands">The Netherlands</option>
+            <option value="Peru">Peru</option>
+            <option value="Qatar">Qatar</option>
+            <option value="Romania">Romania</option>
+            <option value="Russia">Russia</option>
+            <option value="Singapore">Singapore</option>
+            <option value="South Africa">South Africa</option>
+            <option value="Switzerland">Switzerland</option>
+            <option value="Sweden">Sweden</option>
+            <option value="South Korea">South Korea</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Turkey">Turkey</option>
+            <option value="Tanzania">Tanzania</option>
+            <option value="United Arab Emirates">United Arab Emirates</option>
+            <option value="Uganda">Uganda</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="United States">United States</option>
+            <option value="Venezuela">Venezuela</option>
+            <option value="Zambia">Zambia</option>
+            <option value="Zimbambwe">Zimbambwe</option>
+        </select><br />
+        <!-- <label for="date">Enter Departure date</label>
+        <input type="date" name="date" id="date"><br> -->
+        <br>
+        <button onclick="fetchHotelRecommendations()">submit</button>
+    </form>
+    </div>
+
+    <!-- Hotel info container -->
+    <div id="hotel-info-container"></div>
+
+    <!-- Flight info container -->
+    <div id="flight-info-container"></div>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Leaflet.js library -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        function fetchHotelRecommendations() {
+            var hotelFeatures = document.getElementById("hotel-features").value;
+            var hotelName = document.getElementById("hotel-name").value;
+            var location = document.getElementById("location").value;
+            
+            var requestData = {
+                "hotel_features": hotelFeatures,
+                "hotel_input": hotelName,
+                "location_input": location,
+            };
+
+            fetch("http://localhost:8000", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Initialize map
+                var map = L.map('map').setView([0, 0], 2);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                // Add markers for recommended hotels
+                var hotelInfoContainer = document.getElementById("hotel-info-container");
+                hotelInfoContainer.innerHTML = "";
+
+                data.recommended_hotels.forEach(hotel => {
+                    var lat = hotel.location.latitude;
+                    var lon = hotel.location.longitude;
+                    var hotelName = hotel.name;
+                    var rating = hotel.rating;
+                    var reviews = hotel.reviews || "No reviews available";
+                    var weather = hotel.weather || {};
+
+                    // Add marker to the map
+                    var marker = L.marker([lat, lon]).addTo(map)
+                        .bindPopup(`<b>${hotelName}</b><br>Rating: ${rating}`)
+                        .openPopup();
+
+                    // Create hotel info container
+                    var hotelInfo = document.createElement("div");
+                    hotelInfo.classList.add("hotel-info");
+
+                    hotelInfo.innerHTML = `<b>${hotelName}</b><br>Rating: ${rating}<br><br><b>Reviews:</b><br>${reviews}`;
+
+                    // Weather information
+                    var weatherInfo = document.createElement("div");
+                    weatherInfo.classList.add("weather-info");
+                    var weatherIcon = document.createElement("img");
+                    weatherIcon.src = `http://openweathermap.org/img/wn/${weather.icon}.png`;
+                    weatherIcon.alt = weather.description;
+                    weatherInfo.appendChild(weatherIcon);
+                    weatherInfo.innerHTML += `<span>${weather.temperature}°C, ${weather.description}</span>`;
+                    hotelInfo.appendChild(weatherInfo);
+
+                    // Button for viewing location on the map
+                    var viewLocationButton = document.createElement("button");
+                    viewLocationButton.innerHTML = "View Location on Map";
+                    viewLocationButton.onclick = function() {
+                        var url = `http://maps.google.com/maps?q=${lat},${lon}&name=${encodeURIComponent(hotelName)}`;
+                        window.open(url, '_blank');
+                    };
+                    hotelInfo.appendChild(viewLocationButton);
+
+                    // Button for Google search link
+                    var googleSearchButton = document.createElement("button");
+                    googleSearchButton.innerHTML = "Google Search";
+                    googleSearchButton.classList.add("google-search-button");
+                    googleSearchButton.onclick = function() {
+                        var searchUrl = `https://www.google.com/search?q=${encodeURIComponent(hotelName)}+${encodeURIComponent(hotel.country)}`;
+                        window.open(searchUrl, '_blank');
+                    };
+                    hotelInfo.appendChild(googleSearchButton);
+
+                    hotelInfoContainer.appendChild(hotelInfo);
+                });
+
+                
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>

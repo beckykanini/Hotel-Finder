@@ -1,0 +1,26 @@
+<!-- Forgot Password Form -->
+<div class="form-container" id="forgot-password-form">
+    <span class="close-btn" onclick="closeForm('forgot-password-form')">&times;</span>
+    <form id="forgotPasswordForm" method="POST" action="forgot.php" onsubmit="return validateForgotPasswordForm()">
+        <h2>Forgot Password</h2>
+        <input type="email" name="email" placeholder="Email" id="forgot-email" required>
+        <button type="submit">Reset Password</button>
+    </form>
+</div>
+
+<script>
+    function validateForgotPasswordForm() {
+        const email = document.getElementById("forgot-email").value;
+        if (email.length === 0 || email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+            alert("Please enter a valid email address.");
+            document.getElementById("forgot-email").focus();
+            return false;
+        }
+        return true;
+    }
+
+    function closeForm(formId) {
+        var form = document.getElementById(formId);
+        form.style.display = 'none';
+    }
+</script>

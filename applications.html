@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Based</title>
+</head>
+<body>
+    <h2>Hotel Recommendation</h2>
+    <form id="recommendationForm">
+        <label for="userInput">Enter Hotel Features:</label>
+        <input type="text" id="userInput" name="userInput"><br><br>
+
+        <input type="submit" value="Get Recommendations">
+    </form>
+
+    <div id="recommendedHotels"></div>
+
+    <script>
+        document.getElementById('recommendationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const userInput = document.getElementById('userInput').value;
+
+            fetch("http://localhost:8000", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_input: userInput })
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log("Response received:", data);
+
+                const recommendedHotelsContainer = document.getElementById('recommendedHotels');
+                recommendedHotelsContainer.innerHTML = "";
+
+                const recommendedHotelsList = document.createElement('ul');
+                data.recommended_hotels.forEach((hotel) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = hotel;
+                    recommendedHotelsList.appendChild(listItem);
+                });
+                recommendedHotelsContainer.appendChild(recommendedHotelsList);
+            })
+            .catch((error) => {
+                console.error("There was a problem with the fetch operation:", error);
+                alert("Failed to retrieve hotel data. Please try again later.");
+            });
+        });
+    </script>
+</body>
+</html>

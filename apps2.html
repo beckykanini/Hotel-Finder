@@ -1,0 +1,262 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Input Form</title>
+  </head>
+  <body>
+    <form id="inputForm">
+      <h2></h2>
+      <label for="name">These are the things I'd love in the hotel and rooms:</label><br />
+      <input type="text" id="features" name="features" /><br />
+      <label for="user_uuid">I love this hotel:</label><br />
+      <input type="text" id="hotel_input" name="hotel_input" /><br />
+      <input type="submit" value="Get me sth similar" />
+    </form>
+    <br />
+    <br />
+    <h3>Content Based Results</h3>
+    <div id="recommendedHotels"></div>
+    <h3>Collaborative Filtering Results</h3>
+    <br />
+    <br />
+    <div id="recommendations"></div>
+
+    <script>
+      document
+        .getElementById("inputForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the form from submitting normally
+
+          // Get the value of the name and user_uuid input fields
+          var features = document.getElementById("features").value;
+          var hotel_name = document.getElementById("hotel_input").value;
+          console.log("Hotel_Features", features);
+          console.log("Hotel_Name:", hotel_name);
+
+          // Send a POST request to CORS Anywhere proxy with the name and user_uuid
+          fetch("http://localhost:8000", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ hotel_features: features, hotel_input: hotel_name }), // Include user_uuid in the body
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+                console.log("Response received:", data);
+
+                const recommendedHotelsContainer = document.getElementById('recommendedHotels');
+                recommendedHotelsContainer.innerHTML = "";
+
+                const recommendedHotelsList = document.createElement('ul');
+                data.recommended_hotels.forEach((hotel) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = hotel;
+                    recommendedHotelsList.appendChild(listItem);
+                });
+                recommendedHotelsContainer.appendChild(recommendedHotelsList);
+
+                const recommendationsContainer = document.getElementById('recommendations');
+                recommendationsContainer.innerHTML = "";
+
+                const recommendationsList = document.createElement('ul');
+                data.recommendations.forEach((hotel) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = hotel;
+                    recommendationsList.appendChild(listItem);
+                });
+                recommendationsContainer.appendChild(recommendationsList)
+            })
+            .catch((error) => {
+                console.error("There was a problem with the fetch operation:", error);
+                alert("Failed to retrieve hotel data. Please try again later.");
+            });
+        });
+    </script>
+  </body>
+</html>
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Input Form</title>
+</head>
+<body>
+    <style>
+        #recommendedHotels {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #recommendedHotels ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #recommendedHotels li {
+            margin-bottom: 10px;
+        }
+
+        #filtered_recommendations {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #filtered_recommendations ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #filtered_recommendations li {
+            margin-bottom: 10px;
+        }
+    </style>
+    <form id="inputForm">
+        <h2>User Input Form</h2>
+        <label for="features">These are the things I'd love in the hotel and rooms:</label><br />
+        <input type="text" id="features" name="features" /><br />
+        <label for="hotel_input">I love this hotel:</label><br />
+        <input type="text" id="hotel_input" name="hotel_input" /><br />
+        <label for="location">Find me sth similar in this country:</label><br />
+        <select id="location" name="location">
+            <option value="Albania">Albania</option>
+            <option value="Australia">Australia</option>
+            <option value="Austria">Austria</option>
+            <option value="Belgium">Belgium</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Canada">Canada</option>
+            <option value="Caribbean">Caribbean</option>
+            <option value="China">China</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Costa Rica">Costa Rica</option>
+            <option value="Denmark">Denmark</option>
+            <option value="Ecaduor">Ecaduor</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Finland">Finland</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Greece">Greece</option>
+            <option value="Honduras">Honduras</option>
+            <option value="Hungary">Hungary</option>
+            <option value="India">India</option>
+            <option value="Ireland">Ireland</option>
+            <option value="Italy">Italy</option>
+            <option value="Japan">Japan</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Luxembourg">Luxembourg</option>
+            <option value="Lebanon">Lebanon</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Malaysia">Malaysia</option>
+            <option value="New Zealand">New Zealand</option>
+            <option value="The Netherlands">The Netherlands</option>
+            <option value="Peru">Peru</option>
+            <option value="Qatar">Qatar</option>
+            <option value="Romania">Romania</option>
+            <option value="Russia">Russia</option>
+            <option value="Singapore">Singapore</option>
+            <option value="South Africa">South Africa</option>
+            <option value="Switzerland">Switzerland</option>
+            <option value="Sweden">Sweden</option>
+            <option value="South Korea">South Korea</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Turkey">Turkey</option>
+            <option value="Tanzania">Tanzania</option>
+            <option value="United Arab Emirates">United Arab Emirates</option>
+            <option value="Uganda">Uganda</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="United States">United States</option>
+            <option value="Venezuela">Venezuela</option>
+            <option value="Zambia">Zambia</option>
+            <option value="Zimbambwe">Zimbambwe</option>
+            
+            
+        </select><br />
+        <input type="submit" value="Get me something similar" />
+    </form>
+    <br />
+    <br />
+    <h3>Content Based Results</h3>
+    <div id="recommendedHotels"></div>
+    <h3>Collaborative Filtering Results</h3>
+    <br />
+    <br />
+    <div id="filtered_recommendations"></div>
+
+    <script>
+        document.getElementById("inputForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    // Get the values of the input fields
+    var features = document.getElementById("features").value;
+    var hotel_name = document.getElementById("hotel_input").value;
+    var location = document.getElementById("location").value; // Get the selected location
+
+    console.log("Hotel Features:", features);
+    console.log("Hotel Name:", hotel_name);
+    console.log("Location:", location);
+
+    // Send a POST request to the server with the input data
+    fetch("http://localhost:8000", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            hotel_features: features,
+            hotel_input: hotel_name,
+            location_input: location, // Include location in the body
+        }),
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.json();
+    })
+    .then((data) => {
+        console.log("Response received:", data);
+
+        // Display the recommended hotels and recommendations
+        const recommendedHotelsContainer = document.getElementById('recommendedHotels');
+        recommendedHotelsContainer.innerHTML = "";
+
+        const recommendedHotelsList = document.createElement('ul');
+        data.recommended_hotels.forEach((hotel) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = hotel;
+            recommendedHotelsList.appendChild(listItem);
+        });
+        recommendedHotelsContainer.appendChild(recommendedHotelsList);
+
+        const filtered_recommendationsContainer = document.getElementById('filtered_recommendations');
+        filtered_recommendationsContainer.innerHTML = "";
+
+        const filtered_recommendationsList = document.createElement('ul');
+        data.filtered_recommendations.forEach((hotel) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = hotel;
+            filtered_recommendationsList.appendChild(listItem);
+        });
+        filtered_recommendationsContainer.appendChild(filtered_recommendationsList); // Append filtered recommendations to the appropriate HTML element
+    })
+    .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+        alert("Failed to retrieve hotel data. Please try again later.");
+    });
+});
+    </script>
+</body>
+</html>

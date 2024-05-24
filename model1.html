@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Recommendation Form</title>
+</head>
+<body>
+    <h2>Hotel Recommendation</h2>
+    <form id="recommendationForm">
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country"><br><br>
+
+        <label for="amenitiesDropdown">Select Hotel Amenities:</label>
+        <select id="amenitiesDropdown" multiple>
+            <option value="free parking">Free Parking</option>
+            <option value="valet parking">Valet Parking</option>
+            <option value="paid private parking">Paid Private Parking</option>
+            <option value="internet">Free High Speed Internet(WiFi)</option>
+            <option value="air">Air Transportation</option>
+            <option value="car">Car Hire</option>
+            <option value="children">Children Services</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="bar">Bar/Lounge</option>
+            <option value="pool">Pool</option>
+            <option value="gym">Fitness Center</option>
+            <option value="golf">Free Breakfast</option>
+            <option value="tennis">Tennis Court</option>
+        </select><br><br>
+
+        <label for="rommserivcesDropdown">Select Room Services:</label>
+        <select id="rommserivcesDropdown" multiple>
+            <option value="conditioning">Air Conditioning</option>
+            <option value="tv">Flat Screen TV</option>
+            <option value="cleaning">House Keeping</option>
+            <option value="safe">Safe</option>
+            <option value="kitchen">Kitchennette</option>
+            <option value="beach">Private Beach</option>
+            <option value="desk">Desk</option>
+            <option value="bathroom">Additional Bathroom</option>
+            <option value="balcony">Private Balcony</option>
+            <option value="allergy">Allergy free room</option>
+        </select><br><br>
+
+        <label for="roomtypeDropdown">Select Room Type:</label>
+        <select id="roomtypeDropdown" multiple>
+            <option value="smoking">Smoking Rooms</option>
+            <option value="non-smoking">Non-Smoking Rooms</option>
+            <option value="family">Family Rooms</option>
+            <option value="suites">Suites-Bridal Suite</option>
+        </select><br><br>
+        <div id="selectedOptions">
+            <p><strong>Selected Options:</strong></p>
+            <ul id="selectedOptionsList"></ul>
+        </div>
+        <input type="submit" value="submit">
+    </form>
+    <!-- <div id="recommendations"></div> -->
+<div id="contentBasedContainer">
+
+</div>
+    <h2>
+        Collaborative Filtering
+    </h2>
+    
+<div id="collaborativeFilteringContainer"></div>    
+
+
+    <script>
+    // Function to collect user input and hotel name and send it to the server for recommendations
+    document.getElementById('recommendationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // var name = document.getElementById("name").value;
+            // Collect user input
+            const country = document.getElementById('country').value;
+            const amenities = getSelectedOptions('amenitiesDropdown');
+            const roomServices = getSelectedOptions('rommserivcesDropdown');
+            const roomTypes = getSelectedOptions('roomtypeDropdown');
+
+            // Construct user input
+            const user_input = {
+                country: country,
+                amenities: amenities,
+                room_services: roomServices,
+                room_types: roomTypes
+            };
+
+            // Send a POST request to the server
+            fetch("http://localhost:8000", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user_input)
+            })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("Response received:", data);
+
+              // Display response in the HTML for content_based_results
+              var contentBasedContainer = document.getElementById(
+                "contentBasedContainer"
+              );
+              renderHotels(
+                data.content_based_results,
+                contentBasedContainer,
+                
+              );
+            // Display response in the HTML for collaborative_filtering_results
+            // var collaborativeFilteringContainer = document.getElementById(
+            //     "collaborativeFilteringContainer"
+            //   );
+            //   renderHotels(
+            //     data.collaborative_filtering_results,
+            //     collaborativeFilteringContainer,
+                
+            //   );
+            })
+            .catch((error) => {
+              console.error(
+                "There was a problem with the fetch operation:",
+                error
+              );
+              alert("Failed to retrieve hotel data. Please try again later.");
+            });
+        });    
+
+        function renderHotels(hotels, container, ) {
+        container.innerHTML = ""; 
+
+
+        hotels.forEach(function (hotel) {
+          var paragraph = document.createElement("p");
+          paragraph.textContent = `Hotel Name: ${hotel.name}, Rating: ${
+            hotel.sentiment_scores
+          }, Country: ${hotel.country}, Area: ${
+            hotel.area || "Unknown"
+          }`;
+          container.appendChild(paragraph);
+        });
+      }
+
+        // Function to get selected options from a multiple select element
+        function getSelectedOptions() {
+            const allSelects = document.querySelectorAll('select');
+            const selectedOptions = [];
+
+        // Iterate over all select elements on the page
+             allSelects.forEach(select => {
+        // Iterate over the selected options of each select element
+                Array.from(select.selectedOptions).forEach(option => {
+                    selectedOptions.push(option.value);
+                });
+        });
+        return selectedOptions;
+    }
+
+        //Function to update selected options display
+    function updateSelectedOptions() {
+        const selectedOptionsList = document.getElementById('selectedOptionsList');
+        selectedOptionsList.innerHTML = '';
+
+    // Iterate over all select elements on the page
+        document.querySelectorAll('select').forEach(select => {
+        // Iterate over the selected options of each select element
+            Array.from(select.selectedOptions).forEach(option => {
+                const li = document.createElement('li');
+                li.textContent = option.textContent;
+                selectedOptionsList.appendChild(li);
+            });
+        });
+    }   
+
+// Event listener to update selected options whenever any select element changes
+document.querySelectorAll('select').forEach(select => {
+    select.addEventListener('change', updateSelectedOptions);
+});
+ 
+
+        // Send a POST request to CORS Anywhere proxy with the name and user_uuid
+    //     fetch("http://localhost:8000", {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({ user_input }), // Include user_uuid in the body
+    //       })
+    //         .then((response) => {
+    //           if (!response.ok) {
+    //             throw new Error("Network response was not ok");
+    //           }
+    //           return response.json();
+    //         })
+    //         .then((data) => {
+    //           console.log("Response received:", data);
+
+    //           // Display response in the HTML for content_based_results
+    //           var contentBasedContainer = document.getElementById(
+    //             "contentBasedContainer"
+    //           );
+    //           renderHotels(
+    //             data.content_based_results,
+    //             contentBasedContainer,
+                
+    //           );
+
+    //           // Display response in the HTML for collaborative_filtering_results
+    //           var collaborativeFilteringContainer = document.getElementById(
+    //             "collaborativeFilteringContainer"
+    //           );
+    //           renderHotels(
+    //             data.collaborative_filtering_results,
+    //             collaborativeFilteringContainer,
+                
+    //           );
+    //         })
+    //         .catch((error) => {
+    //           console.error(
+    //             "There was a problem with the fetch operation:",
+    //             error
+    //           );
+    //           alert("Failed to retrieve hotel data. Please try again later.");
+    //         });
+    //     });
+
+    //   function renderHotels(hotels, container, ) {
+    //     container.innerHTML = ""; 
+
+
+    //     hotels.forEach(function (hotel) {
+    //       var paragraph = document.createElement("p");
+    //       paragraph.textContent = `Hotel Name: ${hotel.hotel_name}, Rating: ${
+    //         hotel.rating
+    //       }, Neighborhood: ${hotel.neighborhood}, City: ${
+    //         hotel.city || "Unknown"
+    //       }`;
+    //       container.appendChild(paragraph);
+    //     });
+    //   }
+      
+    </script>
+
+</body>
+</html>

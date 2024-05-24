@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Dashboard</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+          }
+          
+          .body-wrapper {
+            display: flex;
+            width: 100%;
+          }
+          
+          .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+          }
+          
+          .sidebar .brand-logo img {
+            width: 100%;
+            padding: 10px;
+          }
+          
+          .sidebar .menu {
+            list-style: none;
+            padding: 0;
+          }
+          
+          .sidebar .menu li {
+            padding: 15px;
+            text-align: left;
+          }
+          
+          .sidebar .menu li a {
+            color: white;
+            text-decoration: none;
+          }
+          
+          .sidebar .menu .submenu {
+            display: none;
+            padding-left: 20px;
+          }
+          
+          .sidebar .menu .submenu-toggle {
+            cursor: pointer;
+          }
+          
+          .sidebar .menu .submenu-toggle::after {
+            content: " ▼";
+          }
+          
+          .sidebar .menu .submenu-toggle.active + .submenu {
+            display: block;
+          }
+          
+          .sidebar .menu .submenu-toggle.active::after {
+            content: " ▲";
+          }
+          
+          .navbar {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            padding: 10px;
+            background-color: #34495e;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+          }
+          
+          .navbar-left {
+            display: flex;
+            align-items: center;
+          }
+          
+          .menu-toggler {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+          }
+          
+          .search-input {
+            padding: 5px;
+            margin-left: 10px;
+          }
+          
+          .navbar-right {
+            display: flex;
+            align-items: center;
+          }
+          
+          .icon-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            position: relative;
+            cursor: pointer;
+          }
+          
+          .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 12px;
+          }
+          
+          .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            color: black;
+            list-style: none;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+          }
+          
+          .notification-menu:hover .dropdown,
+          .profile-menu:hover .dropdown {
+            display: block;
+          }
+          
+          .main-content {
+            margin: 50px 0 0 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+          }
+          
+          .cards {
+            display: flex;
+            flex-wrap: wrap;
+          }
+          
+          .card {
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 10px;
+            flex: 1;
+            min-width: 250px;
+          }
+          
+          .card .icon-container {
+            font-size: 30px;
+            margin-bottom: 10px;
+          }
+          
+          .table-section {
+            margin-top: 20px;
+          }
+          
+          .table-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+          }
+          
+          .table-section th, .table-section td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+          }
+          
+          .footer {
+            margin-left: 250px;
+            padding: 10px;
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+          }
+          
+    </style>
+  <div class="body-wrapper">
+    <aside class="sidebar">
+      <nav>
+        <div class="brand-logo">
+          <img src="images/logo.svg" alt="logo">
+        </div>
+        <ul class="menu">
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="pages/forms/basic-forms.html">Forms</a></li>
+          <li>
+            <a href="#" class="submenu-toggle">UI Features</a>
+            <ul class="submenu">
+              <li><a href="pages/ui-features/buttons.html">Buttons</a></li>
+              <li><a href="pages/ui-features/typography.html">Typography</a></li>
+            </ul>
+          </li>
+          <li><a href="pages/ui-features/tables.html">Tables</a></li>
+          <li><a href="pages/charts/chartjs.html">Charts</a></li>
+          <li>
+            <a href="#" class="submenu-toggle">Sample Pages</a>
+            <ul class="submenu">
+              <li><a href="pages/samples/blank-page.html">Blank Page</a></li>
+              <li><a href="pages/samples/403.html">403</a></li>
+              <li><a href="pages/samples/404.html">404</a></li>
+              <li><a href="pages/samples/500.html">500</a></li>
+              <li><a href="pages/samples/505.html">505</a></li>
+              <li><a href="pages/samples/login.html">Login</a></li>
+              <li><a href="pages/samples/register.html">Register</a></li>
+            </ul>
+          </li>
+          <li><a href="https://themewagon.com/themes/free-material-admin-template/" target="_blank">Upgrade To Pro</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <header class="navbar">
+      <div class="navbar-left">
+        <button class="menu-toggler">☰</button>
+        <input type="text" class="search-input" placeholder="Search anything...">
+      </div>
+      <div class="navbar-right">
+        <div class="notification-menu">
+          <button class="icon-button">🔔<span class="badge">3</span></button>
+          <ul class="dropdown">
+            <li>One unread message</li>
+            <li>One event coming up</li>
+            <li>It's Aleena's birthday!</li>
+          </ul>
+        </div>
+        <button class="icon-button">📦</button>
+        <div class="profile-menu">
+          <button class="icon-button">⋮</button>
+          <ul class="dropdown">
+            <li>Settings</li>
+            <li>Logout</li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <section class="cards">
+        <div class="card">
+          <p>Like what you see? Check out our premium version for more.</p>
+          <a href="https://themewagon.com/themes/free-material-admin-template/" target="_blank">Download Free Version</a>
+          <a href="https://themewagon.com/themes/free-material-admin-template/" target="_blank">Purchase</a>
+        </div>
+        <div class="card">
+          <div class="icon-container">🛠</div>
+          <div>
+            <h3>7459</h3>
+            <p>New projects</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon-container">🛒</div>
+          <div>
+            <h3>$7783</h3>
+            <p>Total Sales</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon-container">🎫</div>
+          <div>
+            <h3>569</h3>
+            <p>Open Tickets</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon-container">⭐</div>
+          <div>
+            <h3>5785</h3>
+            <p>New Visitors</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="chart-section">
+        <div class="chart">
+          <h2>Monthly Analytics</h2>
+          <canvas id="chart"></canvas>
+        </div>
+      </section>
+
+      <section class="table-section">
+        <h2>Employee Status</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Cost</th>
+              <th>Sales Amount</th>
+              <th>Shipping Cost</th>
+              <th>Units Sold</th>
+              <th>Profit Generated</th>
+              <th>Left in Stock</th>
+              <th>Returns</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>T-shirts</td>
+              <td>250</td>
+              <td>300</td>
+              <td>60</td>
+              <td>3453</td>
+              <td>76</td>
+              <td>453643</td>
+              <td>300</td>
+              <td>💙💬❌</td>
+            </tr>
+            <tr>
+              <td>Baseball Hat</td>
+              <td>457</td>
+              <td>204</td>
+              <td>35</td>
+              <td>6754</td>
+              <td>35</td>
+              <td>345623</td>
+              <td>546</td>
+              <td>💙💬❌</td>
+            </tr>
+            <tr>
+              <td>Tennis Racket</td>
+              <td>250</td>
+              <td>350</td>
+              <td>38</td>
+              <td>3289</td>
+              <td>45</td>
+              <td>54662</td>
+              <td>278</td>
+              <td>💙💬❌</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <div>
+        <span>Copyright © 2024. All rights reserved.</span>
+      </div>
+      <div>
+        <span>Hand-crafted & made with ❤️</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submenuToggles = document.querySelectorAll('.submenu-toggle');
+        submenuToggles.forEach(toggle => {
+          toggle.addEventListener('click', () => {
+            toggle.classList.toggle('active');
+          });
+        });
+      });
+      
+  </script>
+</body>
+
+</html>

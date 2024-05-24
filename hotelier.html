@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Hotelier</title>
+</head>
+<body>
+    <div class="container1">
+    <h2>Sign up as a hotelier</h2>
+    <form action="hotelier.php" method="POST" onsubmit="return validateForm()">
+        <label for="username">Hotelier name::</label>
+        <input type="text" id="hotelier_name" name="hotelier_name" ><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Email" ><br>
+        <label for="phone_num">Phone Number:</label>
+        <input type="tel" name="phone_no" id="phone_no" required >
+        <label for="password">Password:</label>
+        <input type="password" id="passwd" name="passwd" placeholder="Password"><br>
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="conf_passwd" name="conf_passwd" ><br>
+        <button type="submit" name="submit">Sign Up</button> 
+      </form>
+      <p id="message"></p>
+    </div>
+
+</body>
+</html>

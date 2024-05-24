@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Forms</title>
+    <style>
+        /* Add your CSS styles here */
+        .delete-form-container {
+            /*display: none;*/
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Delete Form -->
+    <div class="delete-form-container" id="adminDeleteFormContainer">
+        <form id="adminDeleteForm" action="delete_admin.php" method="POST">
+            <h3>Delete Admin</h3>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <button type="submit">Delete Admin</button>
+            <button type="button" onclick="hideForm('adminDeleteFormContainer')">Cancel</button>
+        </form>
+    </div>
+
+    <!-- Guest Delete Form -->
+    <div class="delete-form-container" id="guestDeleteFormContainer">
+        <form id="guestDeleteForm" action="delete_guest.php" method="POST">
+            <h3>Delete Guest</h3>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <button type="submit">Delete Guest</button>
+            <button type="button" onclick="hideForm('guestDeleteFormContainer')">Cancel</button>
+        </form>
+    </div>
+
+    <!-- Hotelier Delete Form -->
+    <div class="delete-form-container" id="hotelierDeleteFormContainer">
+        <form id="hotelierDeleteForm" action="delete_hotelier.php" method="POST">
+            <h3>Delete Hotelier</h3>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <button type="submit">Delete Hotelier</button>
+            <button type="button" onclick="hideForm('hotelierDeleteFormContainer')">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+        function showForm(formId) {
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        function hideForm(formId) {
+            document.getElementById(formId).style.display = 'none';
+        }
+    </script>
+</body>
+</html>

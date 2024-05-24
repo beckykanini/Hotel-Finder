@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Recommendations</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+    <script src="hotel.js"></script>
+    <style>
+        body {
+            font-family: cursive;
+            margin: 0;
+            padding: 0;
+            background-image: url('img/image1.jpg'); /* Path to your background image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white; 
+          
+          }
+
+        .input-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .input-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-container input {
+            width: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            margin-right: 10px;
+        }
+
+        .input-container button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #hotel-info-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hotel-card {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hotel-card img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+
+        .hotel-card-content {
+            text-align: center;
+        }
+
+        .review-form {
+            margin-top: 10px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .review-form h4 {
+            margin-bottom: 5px;
+        }
+
+        .review-form input, .review-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .review-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .reviews {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .reviews h4 {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-btn" onclick="toggleSidebar()">&#9776;</div>
+        <div class="sidebar" id="sidebar">
+            <div class="close-btn" onclick="closeSidebar()">&times;</div>
+            <a href="trial.html">Home</a>
+            <a href="login.html">Get started</a>
+            <a href="tophotels.html">Top Rated Hotels</a>
+            <a href="weather.html">Find Hotel</a>
+            <a href="guest_profile.html">Guest Profile</a>
+            <button onclick="logout()">Logout</button>
+            <div class="dropdown">Settings
+                <div class="dropdown-content">
+                    <a href="#" onclick="toggleTheme()">Themes</a>
+                    <a href="#">Users</a>
+                    <a href="#" onclick="changePassword()">Change Password</a>
+                </div>
+            </div>
+        </div>
+    <div class="input-container">
+        
+    </div>
+
+    <div id="hotel-info-container"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        function fetchHotelRecommendations() {
+            var location = document.getElementById("location").value;
+
+            var requestData = {
+                "location_input": location
+            };
+
+            fetch("http://localhost:8000", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                var hotelInfoContainer = document.getElementById("hotel-info-container");
+                hotelInfoContainer.innerHTML = "";
+
+                if (data.recommended_hotels && data.recommended_hotels.length > 0) {
+                    data.recommended_hotels.forEach(hotel => {
+                        var hotelCard = document.createElement("div");
+                        hotelCard.classList.add("hotel-card");
+
+                        hotelCard.innerHTML = `
+                            <img src="https://via.placeholder.com/100" alt="Hotel Image">
+                            <div class="hotel-card-content">
+                                <h3>${hotel.name}</h3>
+                                <p>Rating: ${hotel.rating}</p>
+                                <p><a href="${hotel.google_search_link}" target="_blank">Google Search</a></p>
+                                <div class="review-form">
+                                    <h4>Submit Your Review</h4>
+                                    <input type="text" id="name-${hotel.name}" placeholder="Your Name">
+                                    <textarea id="review-${hotel.name}" placeholder="Your Review"></textarea>
+                                    <input type="number" id="rating-${hotel.name}" min="1" max="5" placeholder="Your Rating (1-5)">
+                                    <button onclick="submitReview('${hotel.name}')">Submit</button>
+                                </div>
+                                <div class="reviews">
+                                    <h4>Reviews:</h4>
+                                    ${hotel.reviews ? hotel.reviews.map(review => `
+                                        <p><strong>${review.user_name}</strong>: ${review.user_review} (${review.user_rating}/5)</p>
+                                    `).join('') : '<p>No reviews yet.</p>'}
+                                </div>
+                            </div>
+                        `;
+                        hotelInfoContainer.appendChild(hotelCard);
+                    });
+                } else {
+                    hotelInfoContainer.innerHTML = "<p>No hotels found for the specified location.</p>";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+
+        function submitReview(hotelName) {
+            var userName = document.getElementById(`name-${hotelName}`).value;
+            var userReview = document.getElementById(`review-${hotelName}`).value;
+            var userRating = document.getElementById(`rating-${hotelName}`).value;
+
+            var reviewData = {
+                "hotel_name": hotelName,
+                "user_name": userName,
+                "user_review": userReview,
+                "user_rating": userRating
+            };
+
+            fetch("http://localhost:8000/submit_review", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(reviewData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                fetchHotelRecommendations();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>

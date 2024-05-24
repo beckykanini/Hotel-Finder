@@ -1,0 +1,343 @@
+body {
+  font-family: cursive;
+  margin: 0;
+  padding: 0;
+  background-image: url('img/image1.jpg'); /* Path to your background image */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: white; /* Ensure text is readable against the background */
+
+}
+
+.container_header {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay for readability */
+}
+
+.header-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.header-text h1 {
+  font-size: 4em;
+  margin-bottom: 10px;
+}
+
+.header-text p {
+  font-size: 1.5em;
+}
+
+.menu-btn {
+  font-size: 30px;
+  cursor: pointer;
+  color: peru;
+  padding: 15px;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+}
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  color: white;
+  z-index: 999;
+}
+
+.sidebar .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 36px;
+  color: white;
+  cursor: pointer;
+}
+
+.sidebar a, .sidebar button {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sidebar a:hover, .sidebar button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.section-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay for readability */
+  padding: 60px 0;
+  margin: 0; /* Reset margin */
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 3em;
+  color: white;
+}
+
+p {
+  margin-bottom: 30px;
+  font-size: 1.5em;
+  color: white;
+  max-width: 800px;
+  text-align: center;
+}
+
+.btn {
+  padding: 15px 30px;
+  font-size: 18px;
+  color: white;
+  background-color: peru;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 10px 0;
+}
+
+.btn:hover {
+  background-color: #d2691e;
+}
+
+.forgot-password {
+  display: block;
+  margin-top: 20px;
+  color: peru;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-content p {
+  margin: 0;
+}
+
+.footer-content .social-links {
+  margin-top: 10px;
+}
+
+.footer-content .social-links a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.footer-content .social-links a:hover {
+  color: peru;
+}
+
+.hotel-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.hotel-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  width: 300px;
+}
+
+.hotel-card img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.hotel-card h3 {
+  margin: 10px 0;
+  color: white;
+}
+
+.hotel-card p {
+  color: white;
+}
+
+/* Find Hotel Section */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  background-color: rgba(0, 0, 0, 0.6); 
+  margin: 0; /* Reset margin */
+}
+
+.side {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.5s ease all; /* Add transition for hover effect */
+}
+
+.ratings {
+  background: url(''); /* Add the appropriate image URL */
+}
+
+.likes {
+  background: url(''); /* Add the appropriate image URL */
+}
+
+.side:hover .image {
+  transform: scale(1.1); /* Add hover effect */
+}
+
+.caption {
+  position: relative;
+  z-index: 10;
+  color: #fff;
+  text-align: center;
+}
+
+.caption h1 {
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: 1em;
+}
+
+.caption a {
+  text-decoration: none;
+  padding: 10px 20px;
+  color: white;
+  background-color: peru;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.caption a:hover {
+  background-color: #d2691e;
+}
+footer{
+background-color: transparent;
+background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay for readability */
+}
+
+/* signup form */
+.form-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 30px 40px;
+  border-radius: 10px;
+  z-index: 1001; /* Higher than the sidebar */
+  color: white;
+  width: 100%;
+  max-width: 400px; /* Limit the maximum width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+}
+
+.form-container.active {
+  display: block;
+}
+
+.form-container h2 {
+  margin-top: 0;
+  margin-bottom: 20px; /* Add space below the heading */
+  font-size: 1.8em; /* Increase font size for the heading */
+}
+
+.form-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px; /* Increase spacing between inputs */
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box; /* Ensure padding and border are included in the total width */
+}
+
+.form-container button {
+  padding: 12px 20px;
+  background-color: peru;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  font-size: 1em; /* Ensure button text is properly sized */
+}
+
+.form-container button:hover {
+  background-color: #d2691e;
+}
+
+.form-container .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Admin Form -->
+    <div class="form-container" id="AddAdminForm">
+        <span class="close-btn" onclick="closeForm('AddAdminForm')">&times;</span>
+        <form id="addAdminForm" method="POST" action="add_admin.php">
+            <input type="text" name="username" placeholder="Username" id="admin-username" required>
+            <input type="email" name="email" placeholder="Email" id="admin-email" required>
+            <input type="tel" name="phone_no" placeholder="Phone Number" id="admin-phone_no" required>
+            <input type="password" name="passwd" placeholder="Password" id="admin-passwd" required>
+            <input type="password" name="conf_passwd" placeholder="Confirm Password" id="admin-conf_passwd" required>
+            <button type="submit">Add Admin</button>
+        </form>
+    </div>
+
+    <!-- Button to show the Admin form -->
+    <button onclick="showForm('AddAdminForm')">Show Admin Form</button>
+
+    <!-- Guest Form -->
+    <div class="form-container" id="AddGuestForm">
+        <span class="close-btn" onclick="closeForm('AddGuestForm')">&times;</span>
+        <form id="addGuestForm" method="POST" action="add_guest.php">
+            <input type="text" name="username" placeholder="Username" id="guest-username" required>
+            <input type="email" name="email" placeholder="Email" id="guest-email" required>
+            <input type="tel" name="phone_no" placeholder="Phone Number" id="guest-phone_no" required>
+            <input type="password" name="passwd" placeholder="Password" id="guest-passwd" required>
+            <input type="password" name="conf_passwd" placeholder="Confirm Password" id="guest-conf_passwd" required>
+            <button type="submit">Add Guest</button>
+        </form>
+    </div>
+
+    <!-- Button to show the Guest form -->
+    <button onclick="showForm('AddGuestForm')">Show Guest Form</button>
+
+    <!-- Hotelier Form -->
+    <div class="form-container" id="AddHotelierForm">
+        <span class="close-btn" onclick="closeForm('AddHotelierForm')">&times;</span>
+        <form id="addHotelierForm" method="POST" action="add_hotelier.php">
+            <input type="text" name="username" placeholder="Username" id="hotelier-username" required>
+            <input type="email" name="email" placeholder="Email" id="hotelier-email" required>
+            <input type="tel" name="phone_no" placeholder="Phone Number" id="hotelier-phone_no" required>
+            <input type="password" name="passwd" placeholder="Password" id="hotelier-passwd" required>
+            <input type="password" name="conf_passwd" placeholder="Confirm Password" id="hotelier-conf_passwd" required>
+            <button type="submit">Add Hotelier</button>
+        </form>
+    </div>
+
+    <!-- Button to show the Hotelier form -->
+    <button onclick="showForm('AddHotelierForm')">Show Hotelier Form</button>
+
+    <script>
+        function showForm(formId) {
+            var form = document.getElementById(formId);
+            if (form) {
+                form.style.display = 'block';
+            }
+        }
+
+        function closeForm(formId) {
+            var form = document.getElementById(formId);
+            form.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

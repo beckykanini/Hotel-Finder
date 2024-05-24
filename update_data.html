@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Add Guest Form -->
+    <div class="form-container" id="AddGuestForm" style="display: none;">
+        <span class="close-btn" onclick="closeForm('AddGuestForm')">&times;</span>
+        <form id="updateGuestForm" method="POST" action="update_guest.php">
+            <input type="text" name="guestName" placeholder="Guest Name" id="guestName" required>
+            <input type="email" name="email" placeholder="Email" id="guestEmail" required>
+            <input type="tel" name="phone_no" placeholder="Phone Number" id="guestPhone" required>
+            <input type="password" name="passwd" placeholder="Password" id="guestPassword" required>
+            <input type="password" name="conf_passwd" placeholder="Confirm Password" id="guestConfirmPassword" required>
+            <button type="submit">Update Guest</button>
+        </form>
+    </div>
+
+    <!-- Add Admin Form -->
+    <div class="form-container" id="AddAdminForm" style="display: none;">
+        <span class="close-btn" onclick="closeForm('AddAdminForm')">&times;</span>
+        <form id="updateAdminForm" method="POST" action="update_admin.php">
+            <input type="text" name="username" placeholder="Username" id="adminUsername" required>
+            <input type="email" name="email" placeholder="Email" id="adminEmail" required>
+            <input type="password" name="password" placeholder="New Password" id="adminPassword">
+            <button type="submit">Update Admin</button>
+        </form>
+    </div>
+
+    <!-- Add Hotelier Form -->
+    <div class="form-container" id="AddHotelierForm" style="display: none;">
+        <span class="close-btn" onclick="closeForm('AddHotelierForm')">&times;</span>
+        <form id="updateHotelierForm" method="POST" action="update_hotelier.php">
+            <input type="text" name="username" placeholder="Username" id="hotelierUsername" required>
+            <input type="email" name="email" placeholder="Email" id="hotelierEmail" required>
+            <input type="password" name="password" placeholder="New Password" id="hotelierPassword">
+            <button type="submit">Update Hotelier</button>
+        </form>
+    </div>
+
+    <!-- Buttons to trigger update forms -->
+    <button onclick="showUpdateForm('guest')">Update Guest</button>
+    <button onclick="showUpdateForm('admin')">Update Admin</button>
+    <button onclick="showUpdateForm('hotelier')">Update Hotelier</button>
+
+    <script>
+        function showUpdateForm(formType) {
+            var formId = "Add" + formType.charAt(0).toUpperCase() + formType.slice(1) + "Form";
+            var form = document.getElementById(formId);
+            form.style.display = 'block';
+        }
+
+        function closeForm(formId) {
+            var form = document.getElementById(formId);
+            form.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

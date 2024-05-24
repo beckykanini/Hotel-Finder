@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <a href="https://www.flaticon.com/free-icons/room" title="room icons"></a>
+    <title>Hotel Finder</title>
+</head>
+<body>
+  <style>
+    body {
+        font-family: cursive;
+        margin: 0;
+        padding: 0;
+        background-image: url('img/image1.jpg'); /* Path to your background image */
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: white; 
+      
+      }
+      
+      .container_header {
+        position: relative;
+        width: 100%;
+        height: 700px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay for readability */
+      }
+      
+      .header-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+      }
+      
+      .header-text h1 {
+        font-size: 4em;
+        margin-bottom: 10px;
+      }
+      
+      .header-text p {
+        font-size: 1.5em;
+      }
+      
+      .menu-btn {
+        font-size: 30px;
+        cursor: pointer;
+        color: peru;
+        padding: 15px;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
+      }
+      
+      .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+        color: white;
+        z-index: 999;
+      }
+      
+      .sidebar .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 36px;
+        color: white;
+        cursor: pointer;
+      }
+      
+      .sidebar a, .sidebar button {
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 18px;
+        color: white;
+        display: block;
+        transition: 0.3s;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+      }
+      
+      .sidebar a:hover, .sidebar button:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      
+      .section-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay for readability */
+        padding: 60px 0;
+        margin: 0; /* Reset margin */
+      }
+      
+      .centered {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      
+      }
+      
+      h1 {
+        margin-bottom: 20px;
+        font-size: 3em;
+        color: white;
+      }
+      
+      p {
+        margin-bottom: 30px;
+        font-size: 1.5em;
+        color: white;
+        max-width: 800px;
+        text-align: center;
+      }
+      
+      .btn {
+        padding: 15px 30px;
+        font-size: 18px;
+        color: white;
+        background-color: peru;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 10px 0;
+      }
+      
+      .btn:hover {
+        background-color: #d2691e;
+      }
+      
+      .forgot-password {
+        display: block;
+        margin-top: 20px;
+        color: peru;
+        text-decoration: none;
+      }
+      
+      .forgot-password:hover {
+        text-decoration: underline;
+      }
+      
+      footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+      }
+      
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .footer-content p {
+        margin: 0;
+      }
+      
+      .footer-content .social-links {
+        margin-top: 10px;
+      }
+      
+      .footer-content .social-links a {
+        color: white;
+        margin: 0 10px;
+        text-decoration: none;
+        font-size: 18px;
+      }
+      
+      .footer-content .social-links a:hover {
+        color: peru;
+      }
+      
+      .hotel-cards {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      
+      .hotel-card {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        width: 300px;
+      }
+      
+      .hotel-card img {
+        max-width: 100%;
+        border-radius: 10px;
+      }
+      
+      .hotel-card h3 {
+        margin: 10px 0;
+        color: white;
+      }
+      
+      .hotel-card p {
+        color: white;
+      }
+      
+      /* Find Hotel Section */
+      .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+        background-color: rgba(0, 0, 0, 0.6); 
+        margin: 0; /* Reset margin */
+      }
+      
+      .side {
+        width: 50%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .image {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: transform 0.5s ease all; /* Add transition for hover effect */
+      }
+      
+      .ratings {
+        background: url(''); /* Add the appropriate image URL */
+      }
+      
+      .likes {
+        background: url(''); /* Add the appropriate image URL */
+      }
+      
+      .side:hover .image {
+        transform: scale(1.1); /* Add hover effect */
+      }
+      
+      .caption {
+        position: relative;
+        z-index: 10;
+        color: #fff;
+        text-align: center;
+      }
+      
+      .caption h1 {
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        margin-bottom: 1em;
+      }
+      
+      .caption a {
+        text-decoration: none;
+        padding: 10px 20px;
+        color: white;
+        background-color: peru;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      
+      .caption a:hover {
+        background-color: #d2691e;
+      }
+      footer{
+      background-color: transparent;
+      background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay for readability */
+      }
+      
+      /* signup form */
+      .form-container {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.9);
+        padding: 30px 40px;
+        border-radius: 10px;
+        z-index: 1001; /* Higher than the sidebar */
+        color: white;
+        width: 100%;
+        max-width: 400px; /* Limit the maximum width */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+      }
+      
+      .form-container.active {
+        display: block;
+      }
+      
+      .form-container h2 {
+        margin-top: 0;
+        margin-bottom: 20px; /* Add space below the heading */
+        font-size: 1.8em; /* Increase font size for the heading */
+      }
+      
+      .form-container input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0 20px; /* Increase spacing between inputs */
+        border: none;
+        border-radius: 5px;
+        box-sizing: border-box; /* Ensure padding and border are included in the total width */
+      }
+      
+      .form-container button {
+        padding: 12px 20px;
+        background-color: peru;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+        font-size: 1em; /* Ensure button text is properly sized */
+      }
+      
+      .form-container button:hover {
+        background-color: #d2691e;
+      }
+      
+      .form-container .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        color: white;
+      }
+  </style>
+    <!-- Header Section -->
+    <header class="container_header">
+        <div class="header-text">
+            <h1>Welcome to Hotel Finder</h1>
+            <p>Find your perfect stay, wherever you go.</p>
+        </div>
+        <div class="menu-btn" onclick="toggleSidebar()">&#9776;</div>
+        <div class="sidebar" id="sidebar">
+            <div class="close-btn" onclick="closeSidebar()">&times;</div>
+            <a href="#">Home</a>
+            <a href="#" onclick="showForm('signUp')">Get started</a>
+            <a href="#"onclick="showForm('signIn')">Sign In</a>
+            <a href="tophotels.html">Top Rated Hotels</a>
+            <a href="weather.html">Find Hotel</a>
+            <a href="guest_profile.html">Guest Profile</a>
+            <button onclick="logout()">Logout</button>
+            <div class="dropdown">Settings
+                <div class="dropdown-content">
+                    <a href="#" onclick="toggleTheme()">Themes</a>
+                    <a href="#">Users</a>
+                    <a href="#" onclick="changePassword()">Change Password</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Us Section -->
+    <section class="section-container">
+        <div class="centered">
+            <h1>About Us</h1>
+            <p>Hotel Finder is dedicated to helping you find the best hotels around the world. Whether you are traveling for business or leisure, we provide you with comprehensive information on top-rated hotels, user reviews, and the best deals to ensure your stay is comfortable and enjoyable.</p>
+        </div>
+    </section>
+
+    <!-- Top Rated Hotels Section -->
+    <section class="section-container">
+        <div class="centered">
+            <h1>Top Rated Hotels</h1>
+            <div class="hotel-cards">
+                <div class="hotel-card">
+                    <img src="img/bed2.jpg" alt="Hotel 1">
+                    <h3>Luxury Hotel</h3>
+                    <p>Enjoy a luxurious stay with world-class amenities and exceptional service.</p>
+                </div>
+                <div class="hotel-card">
+                    <img src="img/bed2.jpg" alt="Hotel 2">
+                    <h3>Mountain Retreat</h3>
+                    <p>Nestled in the mountains, this hotel provides a serene getaway with breathtaking views.</p>
+                </div>
+                <div class="hotel-card">
+                    <img src="img/bed2.jpg" alt="Hotel 3">
+                    <h3>Beachside Paradise</h3>
+                    <p>Experience the ultimate beach vacation at Beachside Paradise with stunning ocean views.</p>
+                </div>
+                <div class="hotel-card">
+                    <img src="img/bed2.jpg" alt="Hotel 4">
+                    <h3>Urban Oasis</h3>
+                    <p>A modern hotel in the heart of the city, offering convenience and luxury.</p>
+                </div>
+                <div class="hotel-card">
+                    <img src="img/bed2.jpg" alt="Hotel 5">
+                    <h3>Historic Charm</h3>
+                    <p>Stay in a historic hotel with charming architecture and rich history.</p>
+                </div>
+                <div class="hotel-card">
+                    <img src="img/bed2.jpg" alt="Hotel 6">
+                    <h3>Eco-Friendly Escape</h3>
+                    <p>Enjoy a sustainable stay at an eco-friendly hotel committed to the environment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Find Hotel Section -->
+    <section class="wrapper">
+        <div class="side left">
+              <div class="ratings"></div>
+              <div class="caption">
+                    <h1>Find hotel based on ratings</h1>
+                    <a class="button" href="search.html">Learn more</a>
+              </div>
+        </div>
+
+        <div class="side right">
+              <div class="likes"></div>
+              <div class="caption">
+                    <h1>Find hotel based on likes</h1>
+                    <a class="button" href="search.html">Learn More</a>
+              </div>
+        </div>
+    </section>
+
+    <!-- Get Started Section -->
+    <section class="section-container">
+        <div class="centered">
+            <h1>Get started with us</h1>
+
+            <button class="btn" onclick="showForm('signUp')">Sign Up</button>
+            <button class="btn" onclick="showForm('signIn')">Sign In</button>
+            <a href="reset.html" class="forgot-password">Forgot your password?</a>
+        </div>
+    </section>
+
+    <div class="form-container" id="signUp-form">
+        <span class="close-btn" onclick="closeForm('signUp-form')">&times;</span>
+        <form id="signUpForm" method="POST">
+            <input type="text" name="username" placeholder="Username" id="username" required>
+            <input type="email" name="email" placeholder="Email" id="email" required>
+            <input type="tel" name="phone_no" placeholder="Phone Number" id="phone_no" required>
+            <input type="password" name="passwd" placeholder="Password" id="passwd" required>
+            <input type="password" name="conf_passwd" placeholder="Confirm Password" id="conf_passwd" required>
+            <select id="signUpRole" name="role" onchange="updateFormAction('signUpForm')">
+                <option value="">Select Role</option>
+                <option value="guest">Guest</option>
+                <option value="admin">Admin</option>
+                <option value="hotelier">Hotelier</option>
+            </select>
+            <button type="submit" onsubmit="return validateForm('signUpForm'); UpdateForm();">Sign Up</button>
+        </form>
+    </div>
+    
+    <!-- Sign In Form -->
+    <div class="form-container" id="signIn-form">
+        <span class="close-btn" onclick="closeForm('signIn-form')">&times;</span>
+        <form id="signInForm" method="POST">
+            <input type="email" name="email" placeholder="Email" id="email" required>
+            <input type="password" name="passwd" placeholder="Password" id="passwd" required>
+            <select id="signInRole" name="role" onchange="updateFormAction('signInForm')">
+                <option value="">Select Role</option>
+                <option value="guest">Guest</option>
+                <option value="admin">Admin</option>
+                <option value="hotelier">Hotelier</option>
+            </select>
+            <button type="submit" onclick="return validateForm('signInForm'); UpdateFormAction();">Sign In</button>
+        </form>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Hotel Finder. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+                <a href="#">Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function updateFormAction() {
+            var form = document.getElementById('signUpForm');
+            var form1=document.getElementById("signInForm")
+            var role = form.querySelector('select[name="role"]').value;
+            var role1=form1.querySelector('select[name="role"]').value;
+        //sign up form
+            if (role === "admin") {
+                form.action = "/admin_signup.php";
+            } else if (role === "hotelier") {
+                form.action = "/hotelier.php";
+            } else {
+                form.action = "/signup.php";
+            }
+
+            // sign in form
+            if (role1 === "admin") {
+                form1.action = "/admin_login.php";
+            } else if (role1 === "hotelier") {
+                form1.action = "/hotelier_login.php";
+            } else {
+                form1.action = "/login.php";
+            }
+        }
+        
+      function toggleSidebar() {
+          var sidebar = document.getElementById("sidebar");
+          if (sidebar.style.width === "250px") {
+              sidebar.style.width = "0";
+          } else {
+              sidebar.style.width = "250px";
+          }
+      }
+
+      function closeSidebar() {
+          var sidebar = document.getElementById("sidebar");
+          sidebar.style.width = "0";
+      }
+
+      function logout() {
+          fetch('/logout.php', {
+              method: 'POST',
+              credentials: 'same-origin'
+          })
+          .then(response => {
+              if (response.ok) {
+                  window.location.href = '/login.html';
+              } else {
+                  alert('Logout failed:', response.statusText);
+              }
+          })
+          .catch(error => {
+              alert('Error during logout:', error);
+          });
+      }
+
+      function changePassword() {
+          alert("Reset Password clicked!");
+      }
+
+      function validateEmail() {
+        const email = document.getElementById("email").value;
+        if (email.length === 0 || email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+            alert("You must enter a valid email");
+            document.getElementById("email").focus();
+            return false;
+        }
+        
+    }
+        function validateUsername(){
+            const username=docment.getElementById("username");
+            if (!username || username.length <= 4){
+                alert("Username must be more than 4 letters")
+                document.getElementById("username").focus();
+            }
+        }
+        function validatePhoneNum(){
+            const phone_no=document.getElementById("phone_no")
+            var phonePattern = /^\d{10}$/; // Regular expression for 10 digits
+            return phonePattern.test(phone_no);
+            if (!phone_no || !validatePhoneNumber(phone_n0)) {
+                alert("Please enter a valid phone number (10 digits)");
+                document.getElementById(phone_no).focus();
+            }
+        }   
+        function showForm(formType) {
+            var signUpForm = document.getElementById('signUp-form');
+            var signInForm = document.getElementById('signIn-form');
+            signUpForm.style.display = 'none';
+            signInForm.style.display = 'none';
+
+            if (formType === 'signUp') {
+                signUpForm.style.display = 'block';
+            } else if (formType === 'signIn') {
+                signInForm.style.display = 'block';
+            }
+        }
+
+
+    // Validate password
+    function validatePassword() {
+        const password = document.getElementById("passwd").value;
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters long");
+            document.getElementById("passwd").focus();
+            return true;
+        }
+    }
+//function vvalidateConfirm password
+        function confirmPassword(){
+            const password = document.getElementById("passwd").value;
+            const conf_password = document.getElementById("conf_passwd").value;
+
+            if (password == !conf_password){
+                alert("Passwords do not match")
+                document.getElementById("conf_passwd").focus();
+            }
+        }
+
+    function validateForm() {
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("passwd").value;
+        const username=docment.getElementById("username");
+        const phone_no=document.getElementById("phone_no");
+        const conf_password = document.getElementById("conf_passwd").value;
+
+
+        if (username == "") {
+            alert("Please enter username");
+            document.getElementById("username").focus();
+            return true;
+        }
+        if (email == "") {
+            alert("Please enter email");
+            document.getElementById("email").focus();
+            return true;
+        }
+        if (phone_no == "") {
+            alert("Please enter phone number");
+            document.getElementById("phone_no").focus();
+            return true;
+        }
+        if (password == "") {
+            alert("Please enter password");
+            document.getElementById("passwd").focus();
+            return true;
+        }
+        if (conf_password == "") {
+            alert("Please confirm password");
+            document.getElementById("conf_passwd").focus();
+            return true;
+        }
+
+        var val = true;
+        val = validateEmail();
+        if (val == true);
+        val = validatePassword();
+        if (val == true);
+        val=validatePhoneNum();
+        if(val == true);
+        val=validateUsername();
+        if(val == true);
+        val=confirmPassword();
+        if(val == true);
+        return true;
+
+    }
+    function closeForm(formId) {
+      var form = document.getElementById(formId);
+      form.style.display = 'none';
+}
+        
+  </script>
+</body>
+</html>

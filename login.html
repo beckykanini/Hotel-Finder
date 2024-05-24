@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Get Registered</h2>
+	
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            
+        </div>
+        <div class="form-container sign-in-container">
+                <h1>Sign in</h1>
+                <form action="login.php" method="POST" onsubmit="return validateForm()">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="passwd" name="passwd" placeholder="Password" required>
+                    <label for="role">I am a:</label>
+                    <input type="radio" id="admin" name="role" value="admin" required>
+                    <label for="admin">Admin</label>
+                    <input type="radio" id="hotelier" name="role" value="hotelier" required>
+                    <label for="hotelier">Hotelier</label>
+                    <input type="radio" id="guest" name="role" value="guest" required>
+                    <label for="guest">Guest</label>
+                    <button type="submit" name="submit">Sign In</button>
+                </form>
+                <a href="reset.html">Forgot your password?</a>
+                <button>Sign In</button>
+            
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Sign up as a guest, hotel or admin</p>
+                    <label for="role">I am a:</label><br>
+                    <input type="radio" id="adminRole" name="role" value="admin" required>
+                    <label for="adminRole">Admin</label><br>
+                    <input type="radio" id="hotelierRole" name="role" value="hotelier" required>
+                    <label for="hotelierRole">Hotelier</label><br>
+                    <input type="radio" id="guestRole" name="role" value="guest" required>
+                    <label for="guestRole">Guest</label><br><br>
+
+                    <button id="signUpButton">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    const signUpButton = document.getElementById('signUpButton');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
+
+    signUpButton.addEventListener('click', () => {
+        const selectedRole = document.querySelector('input[name="role"]:checked');
+        if (selectedRole) {
+            const role = selectedRole.value;
+            if (role === 'guest' || role === 'admin') {
+                window.location.href = 'signup.html?role=${role}&table=users';
+            } else if (role === 'hotelier') {
+                window.location.href = 'hotelier.html?role=${role}&table=hotels';
+            } else {
+                alert('Invalid role selected.');
+            }
+        } else {
+            alert('Please select a role before signing up.');
+        }
+    });
+
+    signInButton.addEventListener('click', () => {
+        signInButton.addEventListener('click', () => {
+        const selectedRole = document.querySelector('input[name="role"]:checked');
+        if (selectedRole) {
+            const role = selectedRole.value;
+            if (role === 'guest' || role === 'admin') {
+                document.getElementById('signInForm').action = 'login.php?role=${role}';
+                document.getElementById('signInForm').submit();
+            } else if (role === 'hotelier') {
+                document.getElementById('signInForm').action = 'hotelier_login.php?role=${role}';
+                document.getElementById('signInForm').submit();
+            } else {
+                alert('Invalid role selected.');
+            }
+        } else {
+            alert('Please select a role before signing in.');
+        }
+    });
+    });
+
+    // Validate email
+    function validateEmail() {
+        const email = document.getElementById("email").value;
+        if (email.length === 0 || email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+            alert("You must enter a valid email");
+            document.getElementById("email").focus();
+            return false;
+        }
+        return true;
+    }
+
+    // Validate password
+    function validatePassword() {
+        const password = document.getElementById("passwd").value;
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters long");
+            document.getElementById("passwd").focus();
+            return false;
+        }
+        return true;
+    }
+
+    function validateForm() {
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("passwd").value;
+
+        if (email == "") {
+            alert("Please enter email address");
+            document.getElementById("email").focus();
+            return false;
+        }
+        if (password == "") {
+            alert("Please enter password");
+            document.getElementById("passwd").focus();
+            return false;
+        }
+        var val = true;
+        val = validateEmail();
+        if (val == true);
+        val = validatePassword();
+        if (val == true);
+        return val;
+    }
+</script>
+</html>
